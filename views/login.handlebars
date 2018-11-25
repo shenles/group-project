@@ -1,10 +1,8 @@
 <html>
 <h1>Login</h1>
-<form id="login" action="/login" method="">
-    Username: <input type="text" name="user_name"><br>
-    Password: <input type="text" name="user_password"><br>
- </form>
- <form action="/PickUpPlus.html">
+<form id="login" action="/login" method="post">
+    Username: <input type="text" name="user_name" required oninvalid="InvalidMsgUserName();"><br>
+    Password: <input type="text" name="user_password" required oninvalid="InvalidMsgPwd();"><br>
     <input type="submit" value="Login" />
 </form>
 <br/>
