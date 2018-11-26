@@ -1,16 +1,40 @@
 <html>
+<body>
 <h1>Sign Up!</h1>
 <form id="adduser" action="/user" method="post">
     First Name:<input type="text" name="fname" required autofocus oninvalid="InvalidMsgFName(this);"><br>
     Last Name:<input type="text" name="lname" required oninvalid="InvalidMsgLName(this);"><br>
-    User Name (3 characters minimum): <input type="text" name="user_name" minlength="3" required oninvalid="InvalidMsgUserName(this);" oninput="InvalidMsgUserNameCheck(this)"><br>
-    Password (8 characters minimum): <input type="password" name="user_password" minlength="8" required oninvalid="InvalidMsgPwd(this);"><br>
-	Confirm Password: <input type="password" name="user_password_conf" minlength="8" required oninvalid="InvalidMsgPwdConf(this);" oninput="InvalidMsgPasswordCheck(this)"><br>
+    User Name (3 characters minimum): <input type="text" id="user_name"  name="user_name" minlength="3" required oninvalid="InvalidMsgUserName(this);"><br>
+    Password (8 characters minimum): <input type="password" id="user_password" name="user_password" minlength="8" required oninvalid="InvalidMsgPwd(this);"><br>
+	Confirm Password: <input type="password" id="user_password_conf" name="user_password_conf" minlength="8" required oninvalid="InvalidMsgPwdConf(this);"><br> 
     <input type="submit" value="Submit">
  </form>
 <br/>
 
 
 <h2>Already a member?</h2>
-    <td><a href="/login">Click here to go to the Login Page</a></td> 
+    <td><a href="/login">Click here to go to the Login Page</a></td>
+ 
+<script>
+
+        var pwdConfChk = document.getElementById("user_password_conf");
+	if(pwdConfChk){
+		pwdConfChk.addEventListener("keyup",InvalidMsgPwdCheck);
+	}
+
+	function InvalidMsgPwdCheck(){
+		var user_pwd = document.getElementById('user_password');
+		var user_pwd_chk = document.getElementById('user_password_conf');
+		if(user_pwd!=null){
+			if(user_pwd_chk!=null){
+				if(user_pwd.value!=user_pwd_chk.value){
+					user_pwd_chk.setCustomValidity('Passwords must match'); 
+				} else {
+					user_pwd_chk.setCustomValidity('');
+				}
+			}
+		}
+	}		
+</script>	
+</body>
 </html>

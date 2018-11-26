@@ -1,11 +1,16 @@
 <html>
+<head>
+	<title>Log in</title>
+</head>
 <h1>Login</h1>
 <form id="login" action="/login" method="post">
-    Username: <input type="text" name="user_name" required oninvalid="InvalidMsgUserName();"><br>
-    Password: <input type="text" name="user_password" required oninvalid="InvalidMsgPwd();"><br>
+
+    Username: <input type="text" name="user_name" id="user_name" required oninvalid="InvalidMsgUserName();"><br>
+    Password: <input type="password" name="user_password" id="user_password" required oninvalid="InvalidMsgPwd();"><br>
     <input type="submit" value="Login" />
 </form>
 <br/>
 <h2>Don't have a login?</h2>
     <td><a href="/user">Click here to go to the Sign Up Page</a></td> 
+
 </html>
