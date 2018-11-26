@@ -9,36 +9,15 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use(express.static('public'));
-
 app.engine('handlebars', handlebars.engine);
+app.use(bodyParser.urlencoded({extended:true}));
+app.use('/static', express.static('public'));
 app.set('view engine', 'handlebars');
 app.set('port', process.argv[2]);
-
-app.get('/',function(req,res,next){
-  var context = {};
-  var createString = "CREATE TABLE diagnostic(" +
-  "id INT PRIMARY KEY AUTO_INCREMENT," +
-  "text VARCHAR(255) NOT NULL)";
-  mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-    if(err){
-      next(err);
-      return;
-    }
-    mysql.pool.query(createString, function(err){
-      if(err){
-        next(err);
-		return;
-      }
-	  mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-	    mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
-		  context.results = JSON.stringify(rows);
-		  res.render('home',context);
-		});
-	  });
-    });
-  });
-});
+app.set('mysql', mysql);
+app.use('/user', require('./user.js'));
+app.use('/login', require('./login.js'));
+app.use('/', express.static('public'));
 
 app.get('/games',function(req,res,next){
 	var context = {};

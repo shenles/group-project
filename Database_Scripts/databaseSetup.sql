@@ -10,6 +10,8 @@ CREATE TABLE users (
   `user_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(255) NOT NULL,
   `user_password` VARCHAR(255) NOT NULL,
+  `fname` varchar(50) NOT NULL,
+  `lname` varchar(50) NOT NULL
   PRIMARY KEY (user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -32,7 +34,7 @@ CREATE TABLE games (
   `start_time` TIME NOT NULL,
   `host_user` SMALLINT UNSIGNED,
   `max_players` INT(11) NOT NULL,
-  `current_players` INT(11) NOT NULL,  
+  `current_players` INT(11) NOT NULL,
   `location_name` VARCHAR(255) NOT NULL,
   `location_address` VARCHAR(255) NOT NULL,
   `location_city` VARCHAR(255) NOT NULL,
@@ -47,7 +49,14 @@ CREATE TABLE games (
 
 #Add a user
 
-INSERT INTO users (user_name, user_password) VALUES ('TestUser1', 'sports!');
+INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `fname`, `lname`) VALUES
+(1, 'TestUser1', 'sports!', '', ''),
+(2, 'Tonz', '123456', '', ''),
+(3, 'Ann', '123456', '', ''),
+(4, 'Ash', '123456', '', ''),
+(5, 'Marcela', '123456', '', ''),
+(6, 'Leslie', '123456', '', ''),
+(24, 'test', 'test', 'test', 'test');
 
 
 #Add sports
@@ -66,9 +75,9 @@ CREATE TABLE gameUsers (
   `game_id` SMALLINT UNSIGNED NOT NULL,
   `user_id` SMALLINT UNSIGNED,
   PRIMARY KEY (gameUsers_id),
-  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id) 
+  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
   ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT fk_game_id FOREIGN KEY (game_id) REFERENCES games (game_id) 
+  CONSTRAINT fk_game_id FOREIGN KEY (game_id) REFERENCES games (game_id)
   ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -85,3 +94,6 @@ SELECT u.user_name AS Names
 FROM users u
 INNER JOIN gameUsers g ON g.user_id = u.user_id
 WHERE g.game_id = '1';
+
+ALTER TABLE `users`
+  ADD UNIQUE KEY `user_name` (`user_name`);
