@@ -207,6 +207,37 @@ app.get('/user_info',function(req,res,next){
         });
 });
 
+app.get('/get_user_id',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        var queryString = "SELECT user_id FROM users WHERE user_name = ? AND user_password = ?";
+        mysql.pool.query(queryString, [req.query.username, req.query.password], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+                res.send(rows);
+        });
+});
+
+
+app.get('/add_user_to_game',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        var queryString = "INSERT INTO gameUsers (game_id, user_id) VALUES (?, ?);";
+        mysql.pool.query(queryString, [req.query.gameID, req.query.userID], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+                res.send(rows);
+        });
+});
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');

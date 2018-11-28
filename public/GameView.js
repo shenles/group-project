@@ -63,7 +63,33 @@ gameReq.addEventListener("load", function(data){
 gameReq.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/game_by_id/" + ID, true);
 gameReq.send();
 
+function addUserToGame(){
+	var username = window.prompt("Confirm your username", "");
+	var password = window.prompt("Enter your password", "");
 
+	var userConfirmReq = new XMLHttpRequest();
+	userConfirmReq.addEventListener("load", function(data){
+		if(JSON.parse(this.responseText)[0] != undefined){
+			var userId = JSON.parse(this.responseText)[0].user_id;
+		//if(userId != null && userId != undefined){
+			var joinGameReq = new XMLHttpRequest();
+			joinGameReq.addEventListener("load", function(data){
+				console.log("Added to the game!");
+				location = location;
+			});
+			joinGameReq.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/add_user_to_game?gameID=" + ID + "&userID=" + userId, true);
+			joinGameReq.send();
+		}
+		else{
+			console.log("Problem with getting user ID back");
+			console.log(JSON.parse(this.responseText));
+			alert("Username or password was incorrect!");
+		}
+	});
+	userConfirmReq.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/get_user_id?username=" + username + "&password=" + password, true);
+	userConfirmReq.send();
+
+}
 /*var userReq = new XMLHttpRequest();
 userReq.addEventListener("load", function(data){
 	userItem = JSON.parse(this.responseText)[0];

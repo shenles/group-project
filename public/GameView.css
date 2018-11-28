@@ -1,0 +1,20 @@
+
+body {
+	padding-left: 5em 
+}
+#mapImage {
+  /*margin-top: 1em;
+  padding-top: 1em;
+  border-top: thin dotted*/
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: thin dotted
+}
+
+#start_time{
+	width: 15%;
+}
+
+#start_date{
+	width: 15%;
+}
