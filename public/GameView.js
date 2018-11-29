@@ -49,7 +49,43 @@ gameReq.addEventListener("load", function(data){
 		for(var i = 0; i < usersGameItem.length; i++){
 			var userList = document.getElementById("users_list"); //usersGameItem[i].Names;
 			var userListItem = document.createElement("li");
-			userListItem.appendChild(document.createTextNode(usersGameItem[i].Names));
+			userListItem.appendChild(document.createTextNode(usersGameItem[i].Names + "  "));
+			var leaveButton = document.createElement('button');
+			leaveButton.innerText = 'Leave Game!';
+			
+			function setUpLeaveGameButton(username){
+				leaveButton.addEventListener('click', function(event){
+					var password = window.prompt("Confirm your password to leave the game", "");
+					
+					//BEGIN COPY
+					
+					var userConfirmReq = new XMLHttpRequest();
+					userConfirmReq.addEventListener("load", function(data){
+						if(JSON.parse(this.responseText)[0] != undefined){
+							var userId = JSON.parse(this.responseText)[0].user_id;
+							var leaveGameReq = new XMLHttpRequest();
+							leaveGameReq.addEventListener("load", function(data){
+								console.log("left the game!");
+								location = location;
+							});
+							leaveGameReq.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/remove_user_from_game?gameID=" + ID + "&userID=" + userId, true);
+							leaveGameReq.send();
+						}
+						else{
+							console.log("Problem with getting user ID back");
+							console.log(JSON.parse(this.responseText));
+							alert("Password was incorrect!");
+						}
+					});
+					userConfirmReq.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/get_user_id?username=" + username + "&password=" + password, true);
+					userConfirmReq.send();
+					
+					//END COPY					
+   
+				});
+			};
+			setUpLeaveGameButton(usersGameItem[i].Names);
+			userListItem.appendChild(leaveButton);
 			userList.appendChild(userListItem);
 			
 		}
