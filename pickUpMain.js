@@ -37,7 +37,8 @@ app.get('/games',function(req,res,next){
       			return;
     		}
 		for(var i = 0; i < rows.length; i++){
-			rows[i]["Start Date"] = rows[i]["Start Date"].toISOString().slice(0,10);
+			//console.log(rows[i]["Start Date"]);
+			rows[i]["Start Date"] = rows[i]["Start Date"].toString().slice(0,10);
 		}
 		//context.results = JSON.stringify(rows);
 		res.send(rows);
@@ -92,7 +93,7 @@ app.get('/games_by_type',function(req,res,next){
 			console.log(err);
 		}	
 		for(var i = 0; i < rows.length; i++){
-			rows[i]["Start Date"] = rows[i]["Start Date"].toISOString().slice(0,10);
+			rows[i]["Start Date"] = rows[i]["Start Date"].toString().slice(0,10);
 		}
 		res.send(rows)
 	});
@@ -230,6 +231,21 @@ app.get('/add_user_to_game',function(req,res,next){
         res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
         var queryString = "INSERT INTO gameUsers (game_id, user_id) VALUES (?, ?);";
+        mysql.pool.query(queryString, [req.query.gameID, req.query.userID], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+                res.send(rows);
+        });
+});
+
+app.get('/remove_user_from_game',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        var queryString = "DELETE FROM gameUsers WHERE game_id = ? AND user_id = ?;";
         mysql.pool.query(queryString, [req.query.gameID, req.query.userID], function(err, rows, fields){
                 if(err){
                         console.log(err);
