@@ -117,7 +117,7 @@ app.get('/games_by_location',function(req,res,next){
                         console.log(err);
                 }
                 for(var i = 0; i < rows.length; i++){
-                        rows[i]["Start Date"] = rows[i]["Start Date"].toISOString().slice(0,10);
+                        rows[i]["Start Date"] = rows[i]["Start Date"].toString().slice(0,10);
                 }
                 res.send(rows)
         });

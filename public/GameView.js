@@ -27,8 +27,10 @@ gameReq.addEventListener("load", function(data){
 	document.getElementById("start_time").value = gameItem.start_time;
 
 	document.getElementById("host_user").innerHTML = gameItem.host_user;
-
-	document.getElementById("game_location").innerHTML = gameItem.location_name;
+       
+        var gameViewLocation = gameItem.location_name + ', ' + gameItem.location_address + ', ' + gameItem.location_city + ', ' + gameItem.location_state + ', ' + gameItem.location_zip;
+        
+	document.getElementById("game_location").innerHTML = gameViewLocation;
 
         var zipcode = gameItem.location_zip; 
 
