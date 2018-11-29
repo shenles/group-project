@@ -11,11 +11,6 @@ body {
   border-bottom: thin dotted
 }
 
-#locationmap {
-  height: 420px;
-  width: 550px;
-}
-
 #start_time{
 	width: 15%;
 }
