@@ -172,7 +172,7 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 		  if(gameByType.status >= 200 && gameByType.status < 400){
 			
 			var response = JSON.parse(gameByType.responseText);
-			
+	
 			var table = document.createElement("table");
 			var thead = document.createElement("thead");
 			var tr = document.createElement("tr");
@@ -183,17 +183,19 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 				th.textContent = prop;
 				tr.appendChild(th);
 			}
-			
+		        var zipResults = []; 
 			thead.appendChild(tr);
 			var tbody = document.createElement("tbody");
 			for(var i = 0; i < response.length; i++){
-				var tr = document.createElement("tr"); 
+				var tr = document.createElement("tr");
+                                var currentzip = response[i]["Zip Code"];
+                                zipResults.push(currentzip); 
 				for(var prop in response[i]){
 					var td = document.createElement("td");
 					td.style.border = "1px solid black";
 					td.textContent = response[i][prop];
 					tr.appendChild(td);
-				}
+                                }
 
 								
 				var viewgameButton = document.createElement("button");
@@ -221,7 +223,23 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 			document.body.insertBefore(table, document.getElementById("gametable"));
 			document.getElementById("gametable").remove();
 			table.id = "gametable";
-			
+                        
+                        var mapexists = document.getElementById("resultsmap");
+                        if (mapexists){
+                           document.getElementById("resultsmap").remove(); 
+                        }    
+                        var btnexists = document.getElementById("seemapbtn");
+                        if (btnexists){
+                            document.getElementById("seemapbtn").remove(); 
+                        } 
+                        var mapButton = document.createElement("button");
+                        mapButton.setAttribute("id", "seemapbtn"); 
+                        mapButton.textContent = "View Results on Map";
+                        mapButton.addEventListener('click', function(event){
+                             makeMap(zipResults); 
+                                
+                        }); 
+                        document.body.appendChild(mapButton); 
 			
 		  } else {
 			console.log("Error in network request: " + gameByType.statusText);
@@ -239,7 +257,7 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                   if(gameByLocation.status >= 200 && gameByLocation.status < 400){
 
                         var response = JSON.parse(gameByLocation.responseText);
-                          
+                       
                         var table = document.createElement("table");
                         var thead = document.createElement("thead");
                         var tr = document.createElement("tr");
@@ -289,7 +307,6 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                         document.getElementById("gametable").remove();
                         table.id = "gametable";
 
-
                   } else {
                         console.log("Error in network request: " + gameByLocation.statusText);
                   }});
@@ -330,6 +347,66 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 });
 
 
+function makeMap(zipcodeList){
+   
+    var element = document.getElementById("resultsmap");
+    if (element){
+       document.getElementById("resultsmap").remove(); 
+    } 
+    var newmapdiv = document.createElement("div");
+    newmapdiv.setAttribute("id", "resultsmap");
+    newmapdiv.style.cssText = 'width:630px;height:450px;';
+    document.body.appendChild(newmapdiv);
+
+    var zipReq = new XMLHttpRequest();
+    zipReq.addEventListener("load", function(data){
+           allZipData = this.responseText;
+           allCoords = [];
+
+           if (zipcodeList.length != 0) {
+              for (var i=0; i<zipcodeList.length; i++) {  
+                var searchstr = zipcodeList[i] + ","; 
+                var searchZip = allZipData.indexOf(searchstr);
+            
+                if (searchZip != -1) {
+                  var firstCoordStart = searchZip + 6;
+                  var firstCoordEnd = firstCoordStart + 9;
+                  var secondCoordStart = firstCoordEnd + 1;
+                  var secondCoordEnd = secondCoordStart + 10;
+                  var latStr = allZipData.slice(firstCoordStart, firstCoordEnd);
+                  var longStr = allZipData.slice(secondCoordStart, secondCoordEnd);
+                  var latnum = Number(latStr);
+                  var longnum = Number(longStr);
+                  var currentcoord = [];
+                  currentcoord.push(latnum);
+                  currentcoord.push(longnum);
+                  console.log(currentcoord);
+               }
+
+               if (currentcoord != undefined && currentcoord.length == 2) {
+                  allCoords.push(currentcoord);
+               } 
+             }
+         }
+         var bigmap = L.map('resultsmap').setView([39.8283, -98.5795], 4);
+         var biglayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+               attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+               maxZoom: 18,
+               id: 'mapbox.streets',
+               accessToken: 'pk.eyJ1Ijoic2hlbmxlcyIsImEiOiJjanAwbHF1aGIwNnR2M3ZvNjJicjB4YWZjIn0.djrqYZmfMzZKkrDrURti8w'
+              }).addTo(bigmap);
+         for (var i=0; i<allCoords.length; i++){
+             if (allCoords[i].length == 2){
+                 var newmarker = L.marker(allCoords[i]).addTo(bigmap);
+             }
+         }
+       
+   }); 
+    zipReq.open('GET', "https://gist.githubusercontent.com/erichurst/7882666/raw/5bdc46db47d9515269ab12ed6fb2850377fd869e/US%2520Zip%2520Codes%2520from%25202013%2520Government%2520Data", true);
+
+    zipReq.send();
+ 
+}
 
 function displayTables(){
 	
