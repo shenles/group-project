@@ -3,7 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Pick Up Plus</title>
-
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
 	</head>
 	<body>
 	
@@ -14,11 +16,15 @@
 			<fieldset>
 				<legend>Search for a game</legend>
 				<fieldset>
+<<<<<<< HEAD
 					<label>Desired Sport: <select id = "sport_types" >
 						<option value = "1">All Types</option></select></label>
+=======
+					<label>Search by Sport: <select id = "sport_types"><option value = "1">All Types</option></select></label>
+>>>>>>> master
 				</fieldset>
 				<fieldset>
-					<label>Desired Location: <input type = "text" id = "location_search"></label>
+					<label>Search by City: <select id = "location_search"><option value = "1">All Cities</option></select></label>
 				</fieldset>
 				<fieldset>
 					<button id = "filterGames" type = "button">Search!</button>
@@ -35,6 +41,7 @@
 				<fieldset>
 					<label>Start Date: <input type = "date" id = "start_date" required></label>
 				</fieldset>
+<<<<<<< HEAD
                 <fieldset>
                     <label>Start Time: <input type = "time" id = "start_time" required ></label>
                 </fieldset>				
@@ -54,6 +61,23 @@
                 <fieldset>
                          <label>Location State: <select id="location_state" required >
 					<option value="" selected disable hidden>Choose State</option>
+=======
+                                <fieldset>
+                                        <label>Start Time: <input type = "time" id = "start_time"></label>
+                                </fieldset>				
+                                <fieldset>
+					<label>Location Name: <input type = "text" id = "location_name"></label>
+				</fieldset>
+                                <fieldset>
+                                        <label>Location Address: <input type="text" id="location_address"></label>
+                                </fieldset>
+                                <fieldset>
+                                        <label>Location City: <input type="text" id="location_city"></label>
+                                </fieldset>
+                                <fieldset>
+                                        <label>Location State: <select id="location_state">
+										<option value="" selected disable hidden>Choose State</option>
+>>>>>>> master
                                         <option value="AL">AL</option>
                                         <option value="AK">AK</option>
                                         <option value="AR">AR</option>
@@ -130,5 +154,8 @@
 		<button id = "filterGames" type = "button">Filter</button><--!>
 		
 		<script src = "PickUpPlus.js"></script>
+                <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+   integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+   crossorigin=""></script> 
 	</body>
 </html>
