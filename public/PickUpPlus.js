@@ -156,6 +156,40 @@ function populateGameFilter(){
 }
 
 
+populateCityDropdown();
+
+function populateCityDropdown(){
+
+        var getCityRequest = new XMLHttpRequest();
+        getCityRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/game_city", true);
+        getCityRequest.addEventListener('load',function(){
+                if(getCityRequest.status >= 200 && getCityRequest.status < 400){
+
+                        var response = JSON.parse(getCityRequest.responseText);
+                        var cityDropdown = document.getElementById("location_search");
+                        var cityArray = [];
+                  
+                        for(var i = 0; i < response.length; i++){
+                             if(cityArray.indexOf(response[i]["location_city"]) < 0){
+                                 cityArray.push(response[i]["location_city"]);
+                             }                                           
+                        }                                                                     
+                       
+                        for(var i = 0; i < cityArray.length; i++){
+				optionElem = document.createElement("option");
+				optionElem.value = cityArray[i];
+				optionElem.innerHTML = cityArray[i];
+
+			        cityDropdown.append(optionElem);
+                        }
+
+                        } else {
+			console.log("Error in network request: " + getCityRequest.statusText);
+		}});
+	getCityRequest.send(null);	
+	
+}
+ 
 //Set up filtering
 document.getElementById("filterGames").addEventListener("click", function(event){
 	
@@ -246,9 +280,10 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 		  }});
 		gameByType.send(null);
 	}
-	else {
+	else if (document.getElementById("location_search").value != 1){
 		//location = location;
-                var searchlocation = document.getElementById("location_search").value;
+	        var citySelect = document.getElementById("location_search");
+		var searchlocation = citySelect.options[citySelect.selectedIndex].value;
                 
                 var gameByLocation = new XMLHttpRequest();	
                 
