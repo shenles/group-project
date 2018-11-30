@@ -268,11 +268,13 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                                 th.textContent = prop;
                                 tr.appendChild(th);
                         }	
-                        
+                        var zipResults = [];             
                         thead.appendChild(tr);
                         var tbody = document.createElement("tbody");
                         for(var i = 0; i < response.length; i++){
                                 var tr = document.createElement("tr");
+                                var currentzip = response[i]["Zip Code"];
+                                zipResults.push(currentzip);
                                 for(var prop in response[i]){
                                         var td = document.createElement("td");
                                         td.style.border = "1px solid black";
@@ -306,6 +308,23 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                         document.body.insertBefore(table, document.getElementById("gametable"));
                         document.getElementById("gametable").remove();
                         table.id = "gametable";
+                        
+                        var mapexists = document.getElementById("resultsmap");
+                        if (mapexists){
+                           document.getElementById("resultsmap").remove();
+                        }
+                        var btnexists = document.getElementById("seemapbtn");
+                        if (btnexists){
+                            document.getElementById("seemapbtn").remove();
+                        }
+                        var mapButton = document.createElement("button");
+                        mapButton.setAttribute("id", "seemapbtn");
+                        mapButton.textContent = "View Results on Map";
+                        mapButton.addEventListener('click', function(event){
+                             makeMap(zipResults);
+
+                        });
+                        document.body.appendChild(mapButton);
 
                   } else {
                         console.log("Error in network request: " + gameByLocation.statusText);
@@ -380,7 +399,7 @@ function makeMap(zipcodeList){
                   var currentcoord = [];
                   currentcoord.push(latnum);
                   currentcoord.push(longnum);
-                  console.log(currentcoord);
+                
                }
 
                if (currentcoord != undefined && currentcoord.length == 2) {
