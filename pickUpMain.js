@@ -268,3 +268,84 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
+
+function InvalidMsgSport(textbox){
+	if(textbox.validity.missing){ //check that sport is entered
+		textbox.setCustomValidity('Please enter sport');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgDate(textbox){
+	if(textbox.validity.missing){ //check that date is entered
+		textbox.setCustomValidity('Please enter date');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgLocName(textbox){
+	if(textbox.validity.missing){ //check that location name is entered
+		textbox.setCustomValidity('Please enter location name');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgLocAddr(textbox){
+	if(textbox.validity.missing){ //check that location addressis entered
+		textbox.setCustomValidity('Please enter location address');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgLocCity(textbox){
+	if(textbox.validity.missing){ //check that location city is entered
+		textbox.setCustomValidity('Please enter location city');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgLocState(textbox){
+	if(textbox.validity.missing){ //check that location state is entered
+		textbox.setCustomValidity('Please enter location state');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgLocZip(textbox){
+	if(textbox.validity.missing){ //check that location zip code is entered
+		textbox.setCustomValidity('Please enter location zipcode');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgMaxPlyrs(textbox){
+	if(textbox.validity.missing){ //check that max players are entered
+		textbox.setCustomValidity('Please enter maximum players');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}
+
+function InvalidMsgHost(textbox){
+	if(textbox.validity.missing){ //check that host is entered
+		textbox.setCustomValidity('Please enter your user name');
+	} else {
+		textbox.setCustomValidity('');
+	}
+	return true;
+}

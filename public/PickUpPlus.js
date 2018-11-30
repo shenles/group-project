@@ -301,9 +301,9 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 
 document.getElementById("insertgame").addEventListener("click", function(event){
 	
-		event.preventDefault();
+		//event.preventDefault();
 		var sport = document.getElementById("sport_type").value;
-                var start_date = document.getElementById("start_date").value;
+		var start_date = document.getElementById("start_date").value;
 		var start_time = document.getElementById("start_time").value;
 	        var playercap = document.getElementById("max_players").value;	
                 var game_location = document.getElementById("location_name").value;
@@ -312,21 +312,61 @@ document.getElementById("insertgame").addEventListener("click", function(event){
                 var stateabbr = document.getElementById("location_state").value;
                 var zipcode = document.getElementById("location_zip").value;
                 var host_user = document.getElementById("host_user").value;
-              	
-		var getRequest = new XMLHttpRequest();
+
+		invalid=0;
+
+		if(!start_date){
+			alert("Please enter a start date");
+			invalid=1;
+	
+		} else if(!start_time){
+			alert("Please enter start time");	
+			invalid=2;
+		} else if(game_location==""){
+			alert("Please enter a game location");			
+			invalid=3;
+		} else if(street==""){
+			invalid=4;
+			alert("Please enter street address");
+		} else if(city==""){
+			alert("Please enter a city");
+			invalid=5;
+		} else if(stateabbr==""){
+			alert("Please enter state");
+			invalid=6;
+		} else if(zipcode==""){
+			invalid=7;
+			alert("zipcode is missing");	
+		} else if(playercap==""){
+			invalid=8;
+			alert("Max players is missing");
+		}else if(host_user==""||host_user==38){
+			invalid=9;
+			alert("host name is missing");
+		} else {
+			console.log(host_user);
+		}
+
+		event.preventDefault();
+
+		if(!invalid){
+			var getRequest = new XMLHttpRequest();
 		
-		getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date + 
+			getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date + 
 				"&time=" + start_time + "&host_user=" + host_user + "&playercap=" + playercap + "&game_location=" + game_location + 
 				"&street=" + street + "&city=" + city + "&stateabbr=" + stateabbr + "&zipcode=" + zipcode, true);
-		getRequest.addEventListener('load',function(){
-		  if(getRequest.status >= 200 && getRequest.status < 400){
+			getRequest.addEventListener('load',function(){
+		  	if(getRequest.status >= 200 && getRequest.status < 400){
 			
 			location = location;
 			
-		  } else {
-			console.log("Error in network request: " + getRequest.statusText);
-		  }});
-		getRequest.send(null);
+		  	} else {
+				console.log("Error in network request: " + getRequest.statusText);
+		  	}});
+			getRequest.send(null);
+		}else {
+			invalid=false;
+		}
 });
 
 

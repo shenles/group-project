@@ -14,7 +14,8 @@
 			<fieldset>
 				<legend>Search for a game</legend>
 				<fieldset>
-					<label>Desired Sport: <select id = "sport_types"><option value = "1">All Types</option></select></label>
+					<label>Desired Sport: <select id = "sport_types" >
+						<option value = "1">All Types</option></select></label>
 				</fieldset>
 				<fieldset>
 					<label>Desired Location: <input type = "text" id = "location_search"></label>
@@ -29,25 +30,30 @@
 			<fieldset>
 				<legend>Add Game</legend>
 				<fieldset>
-					<label>Sport: <select id = "sport_type"></label></select>
+					<label>Sport: <select id = "sport_type" required></label></select>
 				</fieldset>
 				<fieldset>
-					<label>Start Date: <input type = "date" id = "start_date"></label>
+					<label>Start Date: <input type = "date" id = "start_date" required></label>
 				</fieldset>
-                                <fieldset>
-                                        <label>Start Time: <input type = "time" id = "start_time"></label>
-                                </fieldset>				
-                                <fieldset>
-					<label>Location Name: <input type = "text" id = "location_name"></label>
-				</fieldset>
-                                <fieldset>
-                                        <label>Location Address: <input type="text" id="location_address"></label>
-                                </fieldset>
-                                <fieldset>
-                                        <label>Location City: <input type="text" id="location_city"></label>
-                                </fieldset>
-                                <fieldset>
-                                        <label>Location State: <select id="location_state">
+                <fieldset>
+                    <label>Start Time: <input type = "time" id = "start_time" required ></label>
+                </fieldset>				
+                <fieldset>
+			<label>Location Description Name: 
+				<input type = "text" id = "location_name" required >
+			</label>
+		</fieldset>
+                <fieldset>
+                        <label>Location Address: <input type="text" id="location_address" required >
+			</label>
+                </fieldset>
+                <fieldset>
+                        <label>Location City: <input type="text" id="location_city" required > 
+			</label>
+                </fieldset>
+                <fieldset>
+                         <label>Location State: <select id="location_state" required >
+					<option value="" selected disable hidden>Choose State</option>
                                         <option value="AL">AL</option>
                                         <option value="AK">AK</option>
                                         <option value="AR">AR</option>
@@ -100,13 +106,17 @@
                                         <option value="WY">WY</option></select>
                                 </fieldset> 
                                 <fieldset>
-                                        <label>Location ZIP: <input type="number" id="location_zip"></label>
+                                        <label>Location ZIP: 
+						<input type="number" id="location_zip" required >
+					</label>
                                 </fieldset> 
                                 <fieldset>
-                                        <label>Maximum number of players: <input type="number" id="max_players"></label>
+                                        <label>Maximum number of players: <input type="number" id="max_players" required>
+					</label>
                                 </fieldset>
                                 <fieldset>
-                                        <label>Host user: <select id="host_user"></label>
+                                        <label>Host user: <select id="host_user" required >
+					</label>
                                         </select>
                                 </fieldset>
 				<fieldset>
