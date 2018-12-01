@@ -8,10 +8,11 @@
    crossorigin=""/>
 	</head>
 	<body>
-	
+
 	<button id = "addgame" type = "button">Create a game!</button>
 	<button id = "searchgame" type = "button">Search for a game!</button>
-	
+	<button id = "logout" type = "button">Log out</button>
+
 		<form method = "get" style="display:none;" id = "search_form">
 			<fieldset>
 				<legend>Search for a game</legend>
@@ -28,7 +29,7 @@
 				</fieldset>
 			</fieldset>
 		</form>
-		
+
 		<form method = "get" style="display:none;" id = "game_form">
 			<fieldset>
 				<legend>Add Game</legend>
@@ -40,9 +41,9 @@
 				</fieldset>
                 <fieldset>
                     <label>Start Time: <input type = "time" id = "start_time" required ></label>
-                </fieldset>				
+                </fieldset>
                 <fieldset>
-			<label>Location Description Name: 
+			<label>Location Description Name:
 				<input type = "text" id = "location_name" required >
 			</label>
 		</fieldset>
@@ -51,7 +52,7 @@
 			</label>
                 </fieldset>
                 <fieldset>
-                        <label>Location City: <input type="text" id="location_city" required > 
+                        <label>Location City: <input type="text" id="location_city" required >
 			</label>
                 </fieldset>
                 <fieldset>
@@ -59,7 +60,7 @@
 					<option value="" selected disable hidden>Choose State</option>
                                 <fieldset>
                                         <label>Start Time: <input type = "time" id = "start_time"></label>
-                                </fieldset>				
+                                </fieldset>
                                 <fieldset>
 					<label>Location Name: <input type = "text" id = "location_name"></label>
 				</fieldset>
@@ -122,12 +123,12 @@
                                         <option value="WV">WV</option>
                                         <option value="WI">WI</option>
                                         <option value="WY">WY</option></select>
-                                </fieldset> 
+                                </fieldset>
                                 <fieldset>
-                                        <label>Location ZIP: 
+                                        <label>Location ZIP:
 						<input type="number" id="location_zip" required >
 					</label>
-                                </fieldset> 
+                                </fieldset>
                                 <fieldset>
                                         <label>Maximum number of players: <input type="number" id="max_players" required>
 					</label>
@@ -142,14 +143,14 @@
 				</fieldset>
 			</fieldset>
 		</form>
-		
+
 		<br>
 		<!--<label>Display games by sport:</label> <select id = "sport_types"><option value = "1">All Types</option></select>
 		<button id = "filterGames" type = "button">Filter</button><--!>
-		
+
 		<script src = "PickUpPlus.js"></script>
                 <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
    integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
-   crossorigin=""></script> 
+   crossorigin=""></script>
 	</body>
 </html>

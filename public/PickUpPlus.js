@@ -16,34 +16,37 @@ var tables = ["game"];
 
 tables.forEach(setUpShowFormsButtons);
 
+document.getElementById("logout").addEventListener("click", function (event) {
+    location.replace(location.origin + "/login")
+});
 
 document.getElementById("searchgame").addEventListener("click", function(event){
-		
+
 	event.preventDefault();
 	var allForms = document.getElementsByTagName("form");
 	for (var i = 0; i < allForms.length; i++){
 		allForms[i].style.display = "none";
-		
+
 	}
 	var currForm = document.getElementById("search_form");
 	currForm.style.display = "block";
-		
+
 });
 
-		
-function setUpShowFormsButtons(t){	
+
+function setUpShowFormsButtons(t){
 
 	document.getElementById("add" + t).addEventListener("click", function(event){
-		
+
 		event.preventDefault();
 		var allForms = document.getElementsByTagName("form");
 		for (var i = 0; i < allForms.length; i++){
 			allForms[i].style.display = "none";
-			
+
 		}
 		var currForm = document.getElementById(t + "_form");
 		currForm.style.display = "block";
-		
+
 	});
 }
 
@@ -122,17 +125,17 @@ function populateUserDropdown(){
 populateGameFilter();
 
 function populateGameFilter(){
-	
+
 	var getGameTypeRequest = new XMLHttpRequest();
 	getGameTypeRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/game_type", true);
 	getGameTypeRequest.addEventListener('load',function(){
 		if(getGameTypeRequest.status >= 200 && getGameTypeRequest.status < 400){
-			
+
 			var response = JSON.parse(getGameTypeRequest.responseText);
 			var typeDropdown = document.getElementById("sport_types");
-			//var searchDropdown = document.getElementById("sport_search");	
+			//var searchDropdown = document.getElementById("sport_search");
 			var typeArray = [];
-	
+
 			for(var i = 0; i < response.length; i++){
 				if(typeArray.indexOf(response[i]["sport_type"]) < 0){
 					typeArray.push(response[i]["sport_type"]);
@@ -145,14 +148,14 @@ function populateGameFilter(){
 				optionElem.innerHTML = typeArray[i];
 
 				typeDropdown.append(optionElem);
-				//searchDropdown.append(optionElem);	
+				//searchDropdown.append(optionElem);
 			}
-			
+
 		} else {
 			console.log("Error in network request: " + getGameTypeRequest.statusText);
 		}});
-	getGameTypeRequest.send(null);	
-	
+	getGameTypeRequest.send(null);
+
 }
 
 
@@ -168,13 +171,13 @@ function populateCityDropdown(){
                         var response = JSON.parse(getCityRequest.responseText);
                         var cityDropdown = document.getElementById("location_search");
                         var cityArray = [];
-                  
+
                         for(var i = 0; i < response.length; i++){
                              if(cityArray.indexOf(response[i]["location_city"]) < 0){
                                  cityArray.push(response[i]["location_city"]);
-                             }                                           
-                        }                                                                     
-                       
+                             }
+                        }
+
                         for(var i = 0; i < cityArray.length; i++){
 				optionElem = document.createElement("option");
 				optionElem.value = cityArray[i];
@@ -186,27 +189,27 @@ function populateCityDropdown(){
                         } else {
 			console.log("Error in network request: " + getCityRequest.statusText);
 		}});
-	getCityRequest.send(null);	
-	
+	getCityRequest.send(null);
+
 }
- 
+
 //Set up filtering
 document.getElementById("filterGames").addEventListener("click", function(event){
-	
+
 	event.preventDefault();
 	if(document.getElementById("sport_types").value != 1){
-		
+
 		var typeSelect = document.getElementById("sport_types");
 		var type = typeSelect.options[typeSelect.selectedIndex].value;
-		
+
 		var gameByType = new XMLHttpRequest();
-		
+
 		gameByType.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/games_by_type?type=" + type, true);
 		gameByType.addEventListener('load',function(){
 		  if(gameByType.status >= 200 && gameByType.status < 400){
-			
+
 			var response = JSON.parse(gameByType.responseText);
-	
+
 			var table = document.createElement("table");
 			var thead = document.createElement("thead");
 			var tr = document.createElement("tr");
@@ -217,13 +220,13 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 				th.textContent = prop;
 				tr.appendChild(th);
 			}
-		        var zipResults = []; 
+		        var zipResults = [];
 			thead.appendChild(tr);
 			var tbody = document.createElement("tbody");
 			for(var i = 0; i < response.length; i++){
 				var tr = document.createElement("tr");
                                 var currentzip = response[i]["Zip Code"];
-                                zipResults.push(currentzip); 
+                                zipResults.push(currentzip);
 				for(var prop in response[i]){
 					var td = document.createElement("td");
 					td.style.border = "1px solid black";
@@ -231,7 +234,7 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 					tr.appendChild(td);
                                 }
 
-								
+
 				var viewgameButton = document.createElement("button");
 				viewgameButton.textContent = "View Details";
 				var gameId = response[i]["Game ID"];
@@ -240,12 +243,12 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 					viewgameButton.addEventListener('click', function(event){
 
 						window.open("http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/GameView.html?id=" + gameId, "_self");
-   
+
 					});
 				};
-		
+
 				setUpViewGameButton(gameId);
-				tr.appendChild(viewgameButton);	
+				tr.appendChild(viewgameButton);
 
 				tbody.appendChild(tr);
 			}
@@ -257,24 +260,24 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 			document.body.insertBefore(table, document.getElementById("gametable"));
 			document.getElementById("gametable").remove();
 			table.id = "gametable";
-                        
+
                         var mapexists = document.getElementById("resultsmap");
                         if (mapexists){
-                           document.getElementById("resultsmap").remove(); 
-                        }    
+                           document.getElementById("resultsmap").remove();
+                        }
                         var btnexists = document.getElementById("seemapbtn");
                         if (btnexists){
-                            document.getElementById("seemapbtn").remove(); 
-                        } 
+                            document.getElementById("seemapbtn").remove();
+                        }
                         var mapButton = document.createElement("button");
-                        mapButton.setAttribute("id", "seemapbtn"); 
+                        mapButton.setAttribute("id", "seemapbtn");
                         mapButton.textContent = "View Results on Map";
                         mapButton.addEventListener('click', function(event){
-                             makeMap(zipResults); 
-                                
-                        }); 
-                        document.body.appendChild(mapButton); 
-			
+                             makeMap(zipResults);
+
+                        });
+                        document.body.appendChild(mapButton);
+
 		  } else {
 			console.log("Error in network request: " + gameByType.statusText);
 		  }});
@@ -284,15 +287,15 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 		//location = location;
 	        var citySelect = document.getElementById("location_search");
 		var searchlocation = citySelect.options[citySelect.selectedIndex].value;
-                
-                var gameByLocation = new XMLHttpRequest();	
-                
+
+                var gameByLocation = new XMLHttpRequest();
+
                 gameByLocation.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/games_by_location?searchlocation=" + searchlocation, true);
                 gameByLocation.addEventListener('load',function(){
                   if(gameByLocation.status >= 200 && gameByLocation.status < 400){
 
                         var response = JSON.parse(gameByLocation.responseText);
-                       
+
                         var table = document.createElement("table");
                         var thead = document.createElement("thead");
                         var tr = document.createElement("tr");
@@ -302,8 +305,8 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                                 th.style.border = "1px solid black";
                                 th.textContent = prop;
                                 tr.appendChild(th);
-                        }	
-                        var zipResults = [];             
+                        }
+                        var zipResults = [];
                         thead.appendChild(tr);
                         var tbody = document.createElement("tbody");
                         for(var i = 0; i < response.length; i++){
@@ -317,7 +320,7 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                                         tr.appendChild(td);
                                 }
 
-				
+
 				var viewgameButton = document.createElement("button");
 				viewgameButton.textContent = "View Details";
 				var gameId = response[i]["Game ID"];
@@ -326,12 +329,12 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 					viewgameButton.addEventListener('click', function(event){
 
 						window.open("http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/GameView.html?id=" + gameId, "_self");
-   
+
 					});
 				};
-		
+
 				setUpViewGameButton(gameId);
-				tr.appendChild(viewgameButton);	
+				tr.appendChild(viewgameButton);
 
                                 tbody.appendChild(tr);
                         }
@@ -343,7 +346,7 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                         document.body.insertBefore(table, document.getElementById("gametable"));
                         document.getElementById("gametable").remove();
                         table.id = "gametable";
-                        
+
                         var mapexists = document.getElementById("resultsmap");
                         if (mapexists){
                            document.getElementById("resultsmap").remove();
@@ -366,17 +369,17 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                   }});
                 gameByLocation.send(null);
         }
-	
+
 });
 
 
 document.getElementById("insertgame").addEventListener("click", function(event){
-	
+
 		//event.preventDefault();
 		var sport = document.getElementById("sport_type").value;
 		var start_date = document.getElementById("start_date").value;
 		var start_time = document.getElementById("start_time").value;
-	        var playercap = document.getElementById("max_players").value;	
+	        var playercap = document.getElementById("max_players").value;
                 var game_location = document.getElementById("location_name").value;
 	        var street = document.getElementById("location_address").value;
                 var city = document.getElementById("location_city").value;
@@ -389,12 +392,12 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 		if(!start_date){
 			alert("Please enter a start date");
 			invalid=1;
-	
+
 		} else if(!start_time){
-			alert("Please enter start time");	
+			alert("Please enter start time");
 			invalid=2;
 		} else if(game_location==""){
-			alert("Please enter a game location");			
+			alert("Please enter a game location");
 			invalid=3;
 		} else if(street==""){
 			invalid=4;
@@ -407,7 +410,7 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 			invalid=6;
 		} else if(zipcode==""){
 			invalid=7;
-			alert("zipcode is missing");	
+			alert("zipcode is missing");
 		} else if(playercap==""){
 			invalid=8;
 			alert("Max players is missing");
@@ -422,15 +425,15 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 
 		if(!invalid){
 			var getRequest = new XMLHttpRequest();
-		
-			getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date + 
-				"&time=" + start_time + "&host_user=" + host_user + "&playercap=" + playercap + "&game_location=" + game_location + 
+
+			getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date +
+				"&time=" + start_time + "&host_user=" + host_user + "&playercap=" + playercap + "&game_location=" + game_location +
 				"&street=" + street + "&city=" + city + "&stateabbr=" + stateabbr + "&zipcode=" + zipcode, true);
 			getRequest.addEventListener('load',function(){
 		  	if(getRequest.status >= 200 && getRequest.status < 400){
-			
+
 			location = location;
-			
+
 		  	} else {
 				console.log("Error in network request: " + getRequest.statusText);
 		  	}});
@@ -442,11 +445,11 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 
 
 function makeMap(zipcodeList){
-   
+
     var element = document.getElementById("resultsmap");
     if (element){
-       document.getElementById("resultsmap").remove(); 
-    } 
+       document.getElementById("resultsmap").remove();
+    }
     var newmapdiv = document.createElement("div");
     newmapdiv.setAttribute("id", "resultsmap");
     newmapdiv.style.cssText = 'width:630px;height:450px;';
@@ -458,10 +461,10 @@ function makeMap(zipcodeList){
            allCoords = [];
 
            if (zipcodeList.length != 0) {
-              for (var i=0; i<zipcodeList.length; i++) {  
-                var searchstr = zipcodeList[i] + ","; 
+              for (var i=0; i<zipcodeList.length; i++) {
+                var searchstr = zipcodeList[i] + ",";
                 var searchZip = allZipData.indexOf(searchstr);
-            
+
                 if (searchZip != -1) {
                   var firstCoordStart = searchZip + 6;
                   var firstCoordEnd = firstCoordStart + 9;
@@ -474,12 +477,12 @@ function makeMap(zipcodeList){
                   var currentcoord = [];
                   currentcoord.push(latnum);
                   currentcoord.push(longnum);
-                
+
                }
 
                if (currentcoord != undefined && currentcoord.length == 2) {
                   allCoords.push(currentcoord);
-               } 
+               }
              }
          }
          var bigmap = L.map('resultsmap').setView([39.8283, -98.5795], 4);
@@ -494,24 +497,24 @@ function makeMap(zipcodeList){
                  var newmarker = L.marker(allCoords[i]).addTo(bigmap);
              }
          }
-       
-   }); 
+
+   });
     zipReq.open('GET', "https://gist.githubusercontent.com/erichurst/7882666/raw/5bdc46db47d9515269ab12ed6fb2850377fd869e/US%2520Zip%2520Codes%2520from%25202013%2520Government%2520Data", true);
 
     zipReq.send();
- 
+
 }
 
 function displayTables(){
-	
+
 	var gameRequest = new XMLHttpRequest();
 	gameRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/games", true);
 	gameRequest.addEventListener('load',function(){
 	  if(gameRequest.status >= 200 && gameRequest.status < 400){
 		var response = JSON.parse(gameRequest.responseText);
-		
+
 		var currentTable = document.getElementsByTagName("table")[0];
-		
+
 		if(currentTable){
 			console.log(currentTable);
 			var currentTableParent = currentTable.parentNode;
@@ -519,33 +522,33 @@ function displayTables(){
 		}
 
 		makeTable(response, "game");
-		
+
 	  } else {
 		console.log("Error in network request: " + gameRequest.statusText);
 	  }});
 	gameRequest.send(null);
-	
-	
+
+
 
 }
 
 
 function makeTable(response, tableName){
-	
+
 	var br = document.createElement("br");
 	var label = document.createElement("label");
-	
+
 
 	label.innerHTML = tableName.charAt(0).toUpperCase() + tableName.slice(1) + ":";
-	
+
 	document.body.appendChild(br);
 	document.body.appendChild(label);
-	
+
 	// Create a table element, a thead element and a tr element
 	// for the first row (the header row)
 	var table = document.createElement("table");
 	table.id = tableName + "table";
-	
+
 	var thead = document.createElement("thead");
 	var tr = document.createElement("tr");
 
@@ -564,14 +567,14 @@ function makeTable(response, tableName){
 	// Create a tbody element for the rest of the cells
 	var tbody = document.createElement("tbody");
 
-	
+
 	for(var i = 0; i < response.length; i++){
-	   
+
 		// For each row create a new row element
 		var tr = document.createElement("tr");
-	   
+
 		for(var prop in response[i]){
-		   
+
 			// Create a td element with appropriate styling and
 			// text and append this to the current row
 			var td = document.createElement("td");
@@ -579,7 +582,7 @@ function makeTable(response, tableName){
 			//console.log(response[i]["name"]);
 			td.textContent = response[i][prop];
 			tr.appendChild(td);
-			
+
 		}
 
 		var viewgameButton = document.createElement("button");
@@ -590,12 +593,12 @@ function makeTable(response, tableName){
 			viewgameButton.addEventListener('click', function(event){
 
 				window.open("http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/GameView.html?id=" + gameId, "_self");
-   
+
 			});
 		};
-		
+
 		setUpViewGameButton(gameId);
-		tr.appendChild(viewgameButton);	
+		tr.appendChild(viewgameButton);
 		// Add the new row to the body of the table before looping
 		// again (if required)
 		tbody.appendChild(tr);
