@@ -3,7 +3,7 @@ var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'classmysql.engr.oregonstate.edu',
   user            : 'cs361_clemeant',
-  password        : '6488',
+  password        : '****',
   database        : 'cs361_clemeant'
 });
 
